@@ -26,7 +26,9 @@ if(params.has('id')) {
               results.colors
             '</div>'
           '</div>';
+        var title = 'Oricono | '+ results.name;
         document.getElementById("teddy").innerHTML = test;
+        document.getElementById("title").innerHTML = title;
       }
     }
   request.open("GET", "http://localhost:3000/api/teddies/"+ id);
