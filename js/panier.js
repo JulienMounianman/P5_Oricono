@@ -25,6 +25,33 @@ for (var i= 0; i <= size; i++) {
     tabPanier[i] = panier.getItem('Ours'+ i);
   }
 }
+console.log(tabPanier);
+form = document.getElementById("form");
+form.onclick = function() {
+  var prenom = document.getElementById("inputPrenom").value;
+  var nom = document.getElementById("inputNom").value;
+  var address = document.getElementById("inputAddress").value;
+  var email = document.getElementById("inputAddressElectronique").value;
+  var ville = document.getElementById("inputVille").value;
+  var contact = new Object();
+    contact.prenom = prenom;
+    contact.nom = nom;
+    contact.address = address;
+    contact.email = email;
+    contact.ville = ville;
+  var products = tabPanier;
+
+var finalObj = new Object();
+  finalObj.contact = contact;
+  finalObj.products = products
+
+  var testjson = JSON.stringify(finalObj);
+  console.log(finalObj);
+
+  request.open("POST", "http://localhost:3000/api/teddies/order");
+  request.setRequestHeader("Content-Type", "application/json");
+  request.send(testjson);
+}
 
 clear.onclick = function() {
   panier.clear();
