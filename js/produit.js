@@ -3,7 +3,7 @@ var url = new URL(adresseActuelle);
 var params = new URLSearchParams(url.search);
 var request = new XMLHttpRequest();
 
-
+//Verification parametre URL ET Requetes get
 if(params.has('id')) {
   var id = params.get('id');
   console.log(id)

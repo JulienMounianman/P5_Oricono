@@ -2,6 +2,7 @@ var request = new XMLHttpRequest();
 var adresseActuelle = window.location.href;
 var url = new URL('produit.html',adresseActuelle);
 
+//Requetes GET
 request.onreadystatechange = function() {
     if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
         var json = JSON.parse(request.responseText);
