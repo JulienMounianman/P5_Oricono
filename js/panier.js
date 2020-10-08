@@ -35,13 +35,13 @@ request.onreadystatechange = function() {
       var json = JSON.parse(request.responseText);
       var results = json;
       var teddies = [];
+      var prixtotal = 0;
       teddies.length = size;
       var test = '';
       for (var x in results) {
         for (var i= 0; i <= tabPanier.length; i++) {
           if (results[x]._id == tabPanier[i]) {
             var color = "secondary";
-            console.log(results[x]._id);
             switch (results[x]._id) {
               case '5be9c8541c9d440000665243':
               color = "secondary";
@@ -58,7 +58,6 @@ request.onreadystatechange = function() {
               case '5beaacd41c9d440000a57d97':
               color = "dark";
             }
-          console.log(color);
           var test =
           '<div class="col-sm-3">'+
             '<div class="card text-white bg-'+color+' mb-3" style="max-width: 18rem;">'+
@@ -70,11 +69,15 @@ request.onreadystatechange = function() {
             '</div>'+
           '</div>';
           teddies[i] = test
+
+          prixtotal = prixtotal + results[x].price;
           }
         }
       }
     allArticlePanier = teddies.join("");
+    var afficherPrixTotal = "Prix total : " + prixtotal;
     document.getElementById("ListeArcticlePanier").innerHTML = allArticlePanier;
+    document.getElementById("prixtotal").innerHTML = afficherPrixTotal;
     }
   }
   request.open("GET", "http://localhost:3000/api/teddies");
