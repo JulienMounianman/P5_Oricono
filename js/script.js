@@ -29,24 +29,33 @@ const testpromise = new Promise((resolve, reject) => {
             var allteddybear = teddies.join("");
             document.getElementById("teddies").innerHTML = allteddybear;
             resolve(true);
+        } else {
+          var test = '<div class="col-md">' +
+                        '<div class="alert alert-primary text-center" role="alert">'+
+                        'Impossible de se connecter à l'+"'"+'API.'+
+                        '</div>'+
+                      '</div>';
+          document.getElementById("teddies").innerHTML = test;
         }
     };
     request.open("GET", "http://localhost:3000/api/teddies");
     request.send();
 });
-
 //Tests Unitaires
 function assert(message, expr){
-if(!expr){
- output(false, message);
- throw new Error(message);
+  if(!expr){
+    output(false, message);
+    //throw new Error(message);
+  }
+  output(true, message);
 }
-output(true, message);
-}
+
 function output(result, message){
- message += result ? ' : SUCCESS' : ' : FAILURE';
- console.log(message);
+  message += result ? ' : SUCCESS' : ' : FAILURE';
+  document.getElementById("unit").innerHTML = message;
+
 }
+
 testpromise.then((value) => {
   assert('Tests Unitaires Get', value == true);
 });
