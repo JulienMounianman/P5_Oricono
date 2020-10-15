@@ -84,6 +84,13 @@ request.onreadystatechange = function() {
     var afficherPrixTotal = "Prix total : " + prixtotal;
     document.getElementById("ListeArcticlePanier").innerHTML = allArticlePanier;
     document.getElementById("prixtotal").innerHTML = afficherPrixTotal;
+    } else {
+      var test = '<div class="col-md">' +
+                    '<div class="alert alert-primary text-center" role="alert">'+
+                    'Impossible de se connecter à l'+"'"+'API.'+
+                    '</div>'+
+                  '</div>';
+      document.getElementById("ListeArcticlePanier").innerHTML = test;
     }
   }
   request.open("GET", "http://localhost:3000/api/teddies");
