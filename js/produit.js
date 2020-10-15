@@ -6,12 +6,21 @@ var request = new XMLHttpRequest();
 //Verification parametre URL ET Requetes get
 if(params.has('id')) {
   var id = params.get('id');
-  console.log(id)
   request.onreadystatechange = function() {
       if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
         var panierUrl = adresseActuelle.replace('produit','panier');
         var json = JSON.parse(request.responseText);
         var results = json;
+        var colors = [];
+        colors.length = results.colors.length;
+        for (var i= 0; i < colors.length; i++) {
+          if(i == 0){
+            colors[i] = '<button type="button" class="list-group-item list-group-item-action active">'+results.colors[i]+'</button>';
+          }else {
+            colors[i] = '<button type="button" class="list-group-item list-group-item-action">'+results.colors[i]+'</button>';
+          }
+        }
+        colors_results = colors.join("");
         var test =
           '<div class="card text-center">'+
             '<div class="card-header">' +
@@ -23,11 +32,14 @@ if(params.has('id')) {
               '<a href="'+ panierUrl +'" class="btn btn-primary">Ajouter au panier</a>'+
             '</div>'+
             '<div class="card-footer text-muted">'+
-              results.colors
-            '</div>'
+              '<div class="list-group" id="colors">'+
+              '</div>'+
+            '</div>'+
           '</div>';
+          console.log(results);
         var title = 'Oricono | '+ results.name;
         document.getElementById("teddy").innerHTML = test;
+        document.getElementById("colors").innerHTML = colors_results;
         document.getElementById("title").innerHTML = title;
       }
     }

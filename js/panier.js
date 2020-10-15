@@ -19,7 +19,7 @@ if(params.has('id')) {
   }
 }
 
-//Ajouter des articles du panier dans un Tableau js
+//Ajout des articles du panier dans un Tableau js
 for (var i= 0; i <= size; i++) {
   if (i == 0) {
     tabPanier[i] = panier.getItem('Ours');
@@ -89,57 +89,60 @@ request.onreadystatechange = function() {
   request.open("GET", "http://localhost:3000/api/teddies");
   request.send();
 
-//Formulaire
-form = document.getElementById("form");
-form.onclick = function() {
-  var prenom = document.getElementById("inputPrenom").value.trim();
-  var nom = document.getElementById("inputNom").value.trim();
-  var address = document.getElementById("inputAddress").value.trim();
-  var email = document.getElementById("inputAddressElectronique").value.trim();
-  var ville = document.getElementById("inputVille").value.trim();
+//test Formulaire
 
-  if((prenom && nom && address && email && ville) != ""){
-    var contact = new Object();
-      contact.firstName = prenom;
-      contact.lastName = nom;
-      contact.address = address;
-      contact.city = ville;
-      contact.email = email;
-    var products = tabPanier;
-
-    var finalObj = new Object();
-    finalObj.contact = contact;
-    finalObj.products = products
-
-    var testjson = JSON.stringify(finalObj);
-
-    if(tabPanier[0] != null) {
-      request.onreadystatechange = function() {
-        if (this.readyState == XMLHttpRequest.DONE && this.status == 201) {
-          var json = JSON.parse(request.responseText);
-          var results = json;
-          console.log(results);
-          panier.clear();
-          var price = 0;
-          for(i=0;i<results.products.length;i++){
-            console.log(results.products[i].price);
-            price = price + results.products[i].price;
-          }
-          var confirmUrl = adresseActuelle.replace('panier','confirmation') +
-                        '?id=' + results.orderId +
-                        '&price=' + price;
-          window.location.href = confirmUrl;
-        }
+(function() {
+  "use strict"
+  window.addEventListener("load", function() {
+    var form = document.getElementById("form")
+    form.addEventListener("submit", function(event) {
+      if (form.checkValidity() == false) {
+        event.preventDefault()
+        event.stopPropagation()
       }
-      request.open("POST", "http://localhost:3000/api/teddies/order");
-      request.setRequestHeader("Content-Type", "application/json");
-      request.send(testjson);
-    }else {
-      window.alert("Panier vide !");
-      window.location.href = adresseActuelle;
-    }
-  }else {
-    window.alert("Tous les champs sont obligatoires");
-    window.location.href = adresseActuelle;
-  }
-}
+      var prenom = form.elements.inputPrenom.value.trim();
+      var nom = form.elements.inputNom.value.trim();
+      var address = form.elements.inputAddress.value.trim();
+      var email = form.elements.inputAddressElectronique.value.trim();
+      var ville = form.elements.inputVille.value.trim();
+
+        var contact = new Object();
+          contact.firstName = prenom;
+          contact.lastName = nom;
+          contact.address = address;
+          contact.city = ville;
+          contact.email = email;
+        var products = tabPanier;
+
+        var finalObj = new Object();
+        finalObj.contact = contact;
+        finalObj.products = products
+
+        var testjson = JSON.stringify(finalObj);
+
+        if(tabPanier[0] != null) {
+          request.onreadystatechange = function() {
+            if (this.readyState == XMLHttpRequest.DONE && this.status == 201) {
+              var json = JSON.parse(request.responseText);
+              var results = json;
+              panier.clear();
+              var price = 0;
+              for(i=0;i<results.products.length;i++){
+                price = price + results.products[i].price;
+              }
+              var confirmUrl = adresseActuelle.replace('panier','confirmation') +
+                            '?id=' + results.orderId +
+                            '&price=' + price;
+              window.location.href = confirmUrl;
+            }
+          }
+          request.open("POST", "http://localhost:3000/api/teddies/order");
+          request.setRequestHeader("Content-Type", "application/json");
+          request.send(testjson);
+        }else {
+          window.alert("Panier vide !");
+        }
+      form.classList.add("was-validated")
+    }, false)
+  }, false)
+}())
