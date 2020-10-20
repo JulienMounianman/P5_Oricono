@@ -98,15 +98,28 @@ request.onreadystatechange = function() {
 
 //test Formulaire
 
+function ValidateEmail(inputText)
+{
+  var mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+  if(inputText.elements.inputAddressElectronique.value.match(mailformat)){
+    return true;
+  } else {
+    return false;
+  }
+}
+
+
+
 (function() {
   "use strict"
   window.addEventListener("load", function() {
     var form = document.getElementById("form")
     form.addEventListener("submit", function(event) {
-      if (form.checkValidity() == false) {
+      if (form.checkValidity() == false && ValidateEmail(form) == false) {
         event.preventDefault()
         event.stopPropagation()
       }
+
       var prenom = form.elements.inputPrenom.value.trim();
       var nom = form.elements.inputNom.value.trim();
       var address = form.elements.inputAddress.value.trim();
