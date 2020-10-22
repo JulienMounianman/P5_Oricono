@@ -17,6 +17,7 @@ if(params.has('id')) {
     var nb = size;
     panier.setItem('Ours'+ nb,id)
   }
+  params.delete('id');
 }
 
 //Ajout des articles du panier dans un Tableau js
@@ -111,7 +112,6 @@ function ValidateEmail(inputText)
 
 
 (function() {
-  "use strict"
   window.addEventListener("load", function() {
     var form = document.getElementById("form")
     form.addEventListener("submit", function(event) {
@@ -150,7 +150,7 @@ function ValidateEmail(inputText)
               for(i=0;i<results.products.length;i++){
                 price = price + results.products[i].price;
               }
-              var confirmUrl = adresseActuelle.replace('panier','confirmation') +
+              var confirmUrl = url.pathname.replace('panier','confirmation') +
                             '?id=' + results.orderId +
                             '&price=' + price;
               window.location.href = confirmUrl;

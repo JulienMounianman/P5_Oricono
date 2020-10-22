@@ -4,3 +4,27 @@ $blue:    #5569AC !default;
 body {
   background-color: #B7B7B7;
 }
+.form {
+  margin: auto;
+}
+#ListeArcticlePanier {
+  margin: auto;
+}
+.price {
+  margin: auto;
+}
+#ListeArcticlePanier .bg-secondary {
+  background: linear-gradient(to bottom right,$gray-600, $gray-400);
+}
+#ListeArcticlePanier  .bg-danger {
+  background: linear-gradient(to bottom right,$red, $gray-400);
+}
+#ListeArcticlePanier .bg-info {
+  background: linear-gradient(to bottom right,$cyan, $gray-400);
+}
+#ListeArcticlePanier .bg-success {
+  background: linear-gradient(to bottom right,$green, $gray-400);
+}
+#ListeArcticlePanier .bg-dark {
+  background: linear-gradient(to bottom right,$gray-800, $gray-400);
+}

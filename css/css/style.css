@@ -7798,4 +7798,28 @@ a.text-dark:hover, a.text-dark:focus {
 body {
   background-color: #B7B7B7; }
 
+.form {
+  margin: auto; }
+
+#ListeArcticlePanier {
+  margin: auto; }
+
+.price {
+  margin: auto; }
+
+#ListeArcticlePanier .bg-secondary {
+  background: linear-gradient(to bottom right, #6c757d, #ced4da); }
+
+#ListeArcticlePanier .bg-danger {
+  background: linear-gradient(to bottom right, #dc3545, #ced4da); }
+
+#ListeArcticlePanier .bg-info {
+  background: linear-gradient(to bottom right, #17a2b8, #ced4da); }
+
+#ListeArcticlePanier .bg-success {
+  background: linear-gradient(to bottom right, #28a745, #ced4da); }
+
+#ListeArcticlePanier .bg-dark {
+  background: linear-gradient(to bottom right, #343a40, #ced4da); }
+
 /*# sourceMappingURL=style.css.map */
