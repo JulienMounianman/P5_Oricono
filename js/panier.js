@@ -99,33 +99,47 @@ request.onreadystatechange = function() {
 
 //test Formulaire
 
-function ValidateEmail(inputText)
+function ValidateEmail(email)
 {
-  var mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-  if(inputText.elements.inputAddressElectronique.value.match(mailformat)){
+  var mailformat =  RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
+  if(mailformat.test(email)){
     return true;
   } else {
     return false;
   }
 }
 
+function validateInput(input,nbCharactere) {
+  var  regex = RegExp('^[a-zA-Z]+$');
+  if(regex.test(input)){
+    if(input.length > nbCharactere){
+      return true;
+    }else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+}
 
 
 (function() {
   window.addEventListener("load", function() {
     var form = document.getElementById("form")
-    form.addEventListener("submit", function(event) {
-      if (form.checkValidity() == false && ValidateEmail(form) == false) {
-        event.preventDefault()
-        event.stopPropagation()
-      }
 
+    form.addEventListener("submit", function(event) {
+      event.preventDefault()
       var prenom = form.elements.inputPrenom.value.trim();
       var nom = form.elements.inputNom.value.trim();
       var address = form.elements.inputAddress.value.trim();
       var email = form.elements.inputAddressElectronique.value.trim();
       var ville = form.elements.inputVille.value.trim();
 
+
+      if (form.checkValidity() == false) {
+        form.classList.add("was-validated");
+        return;
+      }
         var contact = new Object();
           contact.firstName = prenom;
           contact.lastName = nom;
@@ -139,7 +153,10 @@ function ValidateEmail(inputText)
         finalObj.products = products
 
         var testjson = JSON.stringify(finalObj);
-
+        console.log(testjson);
+        request.open("POST", "http://localhost:3000/api/teddies/order");
+        request.setRequestHeader("Content-Type", "application/json");
+        request.send(testjson);
         if(tabPanier[0] != null) {
           request.onreadystatechange = function() {
             if (this.readyState == XMLHttpRequest.DONE && this.status == 201) {
@@ -156,9 +173,6 @@ function ValidateEmail(inputText)
               window.location.href = confirmUrl;
             }
           }
-          request.open("POST", "http://localhost:3000/api/teddies/order");
-          request.setRequestHeader("Content-Type", "application/json");
-          request.send(testjson);
         }else {
           window.alert("Panier vide !");
         }
