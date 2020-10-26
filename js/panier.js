@@ -143,8 +143,6 @@ function postForm(url,json) {
 }
 
 
-
-
 var teddies = getallteddies(urlApi);
     teddies.then((value) => {
       GestionPanier();
