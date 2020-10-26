@@ -4,15 +4,21 @@ var params = new URLSearchParams(url.search);
 var request = new XMLHttpRequest();
 var urlApi = "http://localhost:3000/api/teddies";
 
+/**
+ * Fait un appel get sur une api en fonction d'un id
+ *
+ * @param {string} url une chaine de caracteres representant l'url de l'api.
+ * @param {string} id une chaine de caracteres representant l'id d'un Ours.
+*/
 function getTeddy(url,id) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open("GET", url + '/'+ id);
     xhr.onload = function() {
-      if (xhr.status != 200) { // analyze HTTP status of the response
-        reject('Error'+xhr.status+':'+ xhr.statusText); // e.g. 404: Not Found
-      } else { // show the result
-        resolve(xhr.responseText); // response is the server
+      if (xhr.status != 200) {
+        reject('Error'+xhr.status+':'+ xhr.statusText);
+      } else {
+        resolve(xhr.responseText);
       }
     }
     xhr.onerror = function() {
@@ -21,7 +27,11 @@ function getTeddy(url,id) {
     xhr.send();
   });
 }
-
+/**
+ * Gère l'affichage d'un ours en peluche sur ma page html.
+ *
+ * @param {string} url une chaine de caracteres representant la reponse de l'api.
+*/
 function affichageTeddy(teddy) {
   var panierUrl = adresseActuelle.replace('produit','panier');
   var json = JSON.parse(teddy);
@@ -69,8 +79,11 @@ function affichageTeddy(teddy) {
   }
 }
 
+//Verification d'un parametre id dans mon url
 if(params.has('id')) {
   var id = params.get('id');
+
+  //Utilisation des fonctions
   var teddy = getTeddy(urlApi,id);
   teddy.then((value) => {
     affichageTeddy(value);

@@ -9,9 +9,13 @@ var clear = document.getElementById("clear");
 var urlApi = "http://localhost:3000/api/teddies";
 tabPanier.length = size;
 
-
+/**
+ * Verifie si un parametre est présent dans l'url.
+ * Ajoute un ours dans le panier (loacalStorage).
+ * Supprime le parametre après l'ajout de l'ours dans le panier.
+ * Ajoute tous le contenu de mon panier dans un tableau JS.
+*/
 function GestionPanier() {
-  //Verification parametre URl
   if(params.has('id')) {
     var id = params.get('id');
     if (size == 0) {
@@ -22,7 +26,6 @@ function GestionPanier() {
     }
     params.delete('id');
   }
-  //Ajout des articles du panier dans un Tableau js
     for (var i= 0; i <= size; i++) {
       if (i == 0) {
         tabPanier[i] = panier.getItem('Ours');
@@ -34,10 +37,11 @@ function GestionPanier() {
     }
 }
 
-
-
-
-
+/**
+ * Gère l'affichage des ours en peluche présant dans le panier sur ma page html.
+ *
+ * @param {string} url une chaine de caracteres representant la reponse de l'api.
+*/
 function affichagePanier (allteddies) {
   var json = JSON.parse(allteddies);
   var results = json;
@@ -88,8 +92,11 @@ function affichagePanier (allteddies) {
   document.getElementById("prixtotal").innerHTML = afficherPrixTotal;
 }
 
-
-
+/**
+ * Fait un appel get sur une api
+ *
+ * @param {string} url une chaine de caracteres representant l'url de l'api.
+*/
 function getallteddies(url) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
@@ -108,21 +115,12 @@ function getallteddies(url) {
   });
 }
 
-function redirectForm(response) {
-  var json = JSON.parse(response);
-  var results = json;
-  panier.clear();
-  var price = 0;
-  for(i=0;i<results.products.length;i++){
-    price = price + results.products[i].price;
-  }
-  var confirmUrl = url.pathname.replace('panier','confirmation') +
-                '?id=' + results.orderId +
-                '&price=' + price;
-  window.location.href = confirmUrl;
-}
-
-
+/**
+ * Fait un appel get sur une api
+ *
+ * @param {string} url une chaine de caracteres ezpresentant l'url de l'api.
+ * @param {object} json un objet JSON à envoyer vers l'api.
+*/
 function postForm(url,json) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
@@ -142,22 +140,33 @@ function postForm(url,json) {
   });
 }
 
-
-var teddies = getallteddies(urlApi);
-    teddies.then((value) => {
-      GestionPanier();
-      affichagePanier(value);
-
-    }).catch((error) => {
-      console.log(error);
-    })
-
-//Bouton vider le panier
-  clear.onclick = function() {
-    panier.clear();
+/**
+ * Supprime tous les articles du panier (localStorage).
+ * Calcule le prix de la commande.
+ * Redirige vers une url comprenant les paremtères id et price correspondant au prix de la commande et à l'id de la commande
+ * @param {string} response une chaine de caracteres representant la reponse de l'api aprés une requête POST.
+ *
+*/
+function redirectForm(response) {
+  var json = JSON.parse(response);
+  var results = json;
+  panier.clear();
+  var price = 0;
+  for(i=0;i<results.products.length;i++){
+    price = price + results.products[i].price;
   }
+  var confirmUrl = url.pathname.replace('panier','confirmation') +
+                '?id=' + results.orderId +
+                '&price=' + price;
+  window.location.href = confirmUrl;
+}
 
-//test Formulaire
+
+/**
+ * Verification du champs email du formulaire
+ *
+ * @param {string} email une chaine de caracteres representant l'input email du formulaire.
+*/
 function ValidateEmail(email)
 {
   var mailformat =  RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
@@ -167,6 +176,13 @@ function ValidateEmail(email)
     return false;
   }
 }
+
+/**
+ * Verification des champs du formulaire
+ *
+ * @param {string} input une chaine de caracteres representant un input sauf l'email du formulaire.
+ *@param {int} nbCharactere un entier représentant le nombre de caracteres minimum attendu.
+*/
 function validateInput(input,nbCharactere) {
   var  regex = RegExp('^[a-zA-Z]+$');
   if(regex.test(input)){
@@ -179,6 +195,13 @@ function validateInput(input,nbCharactere) {
     return false;
   }
 }
+
+/**
+ * Verification du panier.
+ *
+ * @param {array} panier un tableau représentant les articles présent dans mon panier(localStorage)
+ *
+*/
 function validatePanier(panier) {
   return new Promise((resolve, reject) => {
     if(panier[0] != null) {
@@ -188,7 +211,8 @@ function validatePanier(panier) {
     }
   });
 }
-//Formulaire event
+
+//Gestion des events load et submit de mon formulaire.
 (function() {
   window.addEventListener("load", function() {
     var form = document.getElementById("form")
@@ -241,3 +265,17 @@ function validatePanier(panier) {
     }, false)
   }, false)
 }())
+
+//Utilisation de mes fonction getallteddies, GestionPanier, affichagePanier
+var teddies = getallteddies(urlApi);
+    teddies.then((value) => {
+      GestionPanier();
+      affichagePanier(value);
+    }).catch((error) => {
+      console.log(error);
+    })
+
+//Bouton vider le panier
+  clear.onclick = function() {
+    panier.clear();
+  }

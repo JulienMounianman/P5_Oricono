@@ -3,6 +3,12 @@ var adresseActuelle = window.location.href;
 var url = new URL('produit.html',adresseActuelle);
 var urlApi = "http://localhost:3000/api/teddies";
 
+
+/**
+ * Fait un appel get sur une api
+ *
+ * @param {string} url une chaine de caracteres ezpresentant l'url de l'api.
+*/
 function getallteddies(url) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
@@ -20,6 +26,12 @@ function getallteddies(url) {
     xhr.send();
   });
 }
+
+/**
+ * Gère l'affichage de tous les ours en peluche sur ma page html
+ *
+ * @param {string} url une chaine de caracteres representant la reponse de l'api.
+*/
 function affichageAllTeddies (allteddies) {
   var json = JSON.parse(allteddies);
   var results = json;
@@ -44,6 +56,7 @@ function affichageAllTeddies (allteddies) {
   document.getElementById("teddies").innerHTML = allteddybear;
 }
 
+//Utilisation des fonctions
 var teddies = getallteddies(urlApi);
     teddies.then((value) => {
       affichageAllTeddies(value);
