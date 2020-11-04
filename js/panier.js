@@ -1,7 +1,6 @@
 var adresseActuelle = window.location.href;
 var url = new URL(adresseActuelle);
 var params = new URLSearchParams(url.search);
-var request = new XMLHttpRequest();
 var panier = localStorage;
 var size = Object.keys(panier).length;
 var tabPanier = [];
@@ -266,7 +265,7 @@ function validatePanier(panier) {
   }, false)
 }())
 
-//Utilisation de mes fonction getallteddies, GestionPanier, affichagePanier
+//Utilisation de mes fonctions getallteddies, GestionPanier, affichagePanier
 var teddies = getallteddies(urlApi);
     teddies.then((value) => {
       GestionPanier();
