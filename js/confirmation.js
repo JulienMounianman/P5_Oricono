@@ -1,12 +1,12 @@
-var adresseActuelle = window.location.href;
-var url = new URL(adresseActuelle);
-var params = new URLSearchParams(url.search);
+const adresseActuelle = window.location.href;
+const url = new URL(adresseActuelle);
+const params = new URLSearchParams(url.search);
 
 if(params.has('id')) {
-  var id = params.get('id');
+  const id = params.get('id');
     if (params.has('price')) {
-      var price = params.get('price')
-      var test =
+      const price = params.get('price')
+      let resultHTML =
                 '<div class="alert alert-success" role="alert">'+
                   '<h4 class="alert-heading">Confirmation Commande</h4>'+
                   '<p>Voici votre Identifiant de commande : '+ id +'</p>'+
@@ -14,7 +14,7 @@ if(params.has('id')) {
                   '<p class="mb-0">Prix total de votre commande :'+ price +'</p>'+
                   '</div>';
 
-      document.getElementById("confirm").innerHTML = test;
+      document.getElementById("confirm").innerHTML = resultHTML;
     }
   } else {
     window.alert("Erreur");
