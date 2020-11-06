@@ -1,38 +1,50 @@
 const adresseActuelle = window.location.href;
 const url = new URL(adresseActuelle);
 const params = new URLSearchParams(url.search);
-let panier = localStorage;
-let size = Object.keys(panier).length;
-let tabPanier = [];
+let storage = localStorage;
 let clear = document.getElementById("clear");
 const urlApi = "http://localhost:3000/api/teddies";
-tabPanier.length = size;
 /**
  * Verifie si un parametre est présent dans l'url.
  * Ajoute un ours dans le panier (loacalStorage).
  * Supprime le parametre après l'ajout de l'ours dans le panier.
  * Ajoute tous le contenu de mon panier dans un tableau JS.
 */
+
 function GestionPanier() {
   if(params.has('id')) {
     const id = params.get('id');
-    if (size == 0) {
-      panier.setItem('Ours', id);
+    const tabPanier = JSON.parse(storage.getItem('Panier'));
+    let bool = false;
+    if(tabPanier != null) {
+      console.log(tabPanier.length);
+      for (let i= 0; i < tabPanier.length; i++) {
+          if(tabPanier[i].id == id) {
+              tabPanier[i].quantity = tabPanier[i].quantity + 1;
+              storage.setItem('Panier', JSON.stringify(tabPanier));
+              bool = true;
+          }
+        }
+      if(!bool) {
+        const oursObject = {
+          id,
+          quantity: 1
+        }
+        tabPanier.push(oursObject);
+        storage.setItem('Panier', JSON.stringify(tabPanier));
+      }
     } else {
-      const nb = size;
-      panier.setItem('Ours'+ nb,id)
+      const oursObject = {
+        id,
+        quantity: 1
+      }
+      let newtabPanier = [];
+      newtabPanier[0] = oursObject;
+      console.log(newtabPanier);
+      storage.setItem('Panier', JSON.stringify(newtabPanier));
     }
     params.delete('id');
   }
-    for (let i= 0; i <= size; i++) {
-      if (i == 0) {
-        tabPanier[i] = panier.getItem('Ours');
-      }else{
-        if(panier.getItem('Ours'+ i) != null) {
-          tabPanier[i] = panier.getItem('Ours'+ i);
-        }
-      }
-    }
 }
 /**
  * Gère l'affichage des ours en peluche présant dans le panier sur ma page html.
@@ -44,46 +56,49 @@ function affichagePanier (allteddies) {
   let results = json;
   let teddies = [];
   let prixtotal = 0;
-  teddies.length = size;
-  for (let x in results) {
-    for (let i= 0; i <= tabPanier.length; i++) {
-      if (results[x]._id == tabPanier[i]) {
-        let color = "secondary";
-        switch (results[x]._id) {
-          case '5be9c8541c9d440000665243':
-          color = "secondary";
-          break;
-          case '5beaa8bf1c9d440000a57d94':
-          color = "danger";
-          break;
-          case '5beaaa8f1c9d440000a57d95':
-          color = "info";
-          break;
-          case '5beaabe91c9d440000a57d96':
-          color = "success";
-          break;
-          case '5beaacd41c9d440000a57d97':
-          color = "dark";
-        }
-      let resultHTML =
-      '<div class="col-sm-3">'+
-        '<div class="card text-white bg-'+color+' mb-3" style="max-width: 18rem;">'+
-          '<div class="card-header">'+ results[x].name  +'</div>'+
-          '<div class="card-body">'+
-            '<h5 class="card-title">'+ results[x].price  +'</h5>'+
-            '<p class="card-text"></p>'+
+  let tabPanier = JSON.parse(storage.getItem('Panier'));
+  if(tabPanier != null) {
+    for (let x in results) {
+      for (let i= 0; i < tabPanier.length; i++) {
+        if (results[x]._id == tabPanier[i].id) {
+          let color = "secondary";
+          switch (results[x]._id) {
+            case '5be9c8541c9d440000665243':
+            color = "secondary";
+            break;
+            case '5beaa8bf1c9d440000a57d94':
+            color = "danger";
+            break;
+            case '5beaaa8f1c9d440000a57d95':
+            color = "info";
+            break;
+            case '5beaabe91c9d440000a57d96':
+            color = "success";
+            break;
+            case '5beaacd41c9d440000a57d97':
+            color = "dark";
+          }
+
+        let resultHTML =
+        '<div class="col-sm-3">'+
+          '<div class="card text-white bg-'+color+' mb-3" style="max-width: 18rem;">'+
+            '<div class="card-header">'+ results[x].name  +'</div>'+
+            '<div class="card-body">'+
+              '<h5 class="card-title">'+ results[x].price/100  +'</h5>'+
+              '<p class="card-text"> quantité : '+ tabPanier[i].quantity +'</p>'+
+            '</div>'+
           '</div>'+
-        '</div>'+
-      '</div>';
-      teddies[i] = resultHTML;
-      prixtotal = prixtotal + results[x].price;
+        '</div>';
+        teddies[i] = resultHTML;
+        prixtotal = prixtotal + (results[x].price * tabPanier[i].quantity);
+        }
       }
     }
+    allArticlePanier = teddies.join("");
+    let afficherPrixTotal = "Prix total : " + prixtotal/100;
+    document.getElementById("ListeArcticlePanier").innerHTML = allArticlePanier;
+    document.getElementById("prixtotal").innerHTML = afficherPrixTotal;
   }
-  allArticlePanier = teddies.join("");
-  let afficherPrixTotal = "Prix total : " + prixtotal;
-  document.getElementById("ListeArcticlePanier").innerHTML = allArticlePanier;
-  document.getElementById("prixtotal").innerHTML = afficherPrixTotal;
 }
 
 /**
@@ -174,11 +189,6 @@ function ValidateEmail(email)
 function validateInput(input,nbCharactere) {
   const regex = RegExp('^[a-zA-Z]+$');
   if(regex.test(input)){
-    // if(input.length > nbCharactere){
-    //   return true;
-    // }else {
-    //   return false;
-    // }
     return (input.length > nbCharactere);
   } else {
     return false;
@@ -192,8 +202,11 @@ function validateInput(input,nbCharactere) {
 */
 function validatePanier(panier) {
   return new Promise((resolve, reject) => {
-    if(panier[0] != null) resolve("Le Panier n'est pas vide");
-    else reject("Le Panier est vide");
+    if(panier[0] != null) {
+      resolve("Le Panier n'est pas vide");
+    }else{
+      reject("Le Panier est vide");
+    }
   });
 }
 //Gestion des events load et submit de mon formulaire.
@@ -209,41 +222,45 @@ function validatePanier(panier) {
       const ville = form.elements.inputVille.value.trim();
 
 
-      if (form.checkValidity() == false) {
+      if (!form.checkValidity()) {
         form.classList.add("was-validated");
         return;
       }
-        let contact = new Object();
-          contact.firstName = prenom;
-          contact.lastName = nom;
-          contact.address = address;
-          contact.city = ville;
-          contact.email = email;
-        let products = tabPanier;
 
-        let finalObj = new Object();
-        finalObj.contact = contact;
-        finalObj.products = products
+      const contact = {
+        firstName: prenom,
+        lastName: nom,
+        address,
+        city: ville,
+        email: email
+      }
 
-        let testjson = JSON.stringify(finalObj);
-        console.log(testjson);
+      const products = tabPanier;
 
-        let verifPanier = validatePanier(tabPanier);
-        verifPanier.then((value) => {
-          let result = postForm(urlApi,testjson);
-          result.then((value) => {
-              redirectForm(value);
-          }).catch((error) => {
-            console.log(error);
-          })
+      const finalObj = {
+        contact: contact,
+        products: products
+      }
+
+      let testjson = JSON.stringify(finalObj);
+      console.log(testjson);
+
+      let verifPanier = validatePanier(tabPanier);
+      verifPanier.then((value) => {
+        let result = postForm(urlApi,testjson);
+        result.then((value) => {
+            redirectForm(value);
         }).catch((error) => {
-          let panier_vide = '<div class="col-md-12">' +
-                        '<div class="alert alert-danger text-center" role="alert">'+
-                          error +
-                        '</div>'+
-                      '</div>';
-          document.getElementById("ListeArcticlePanier").innerHTML = panier_vide;
+          console.log(error);
         })
+      }).catch((error) => {
+        let panier_vide = '<div class="col-md-12">' +
+                      '<div class="alert alert-danger text-center" role="alert">'+
+                        error +
+                      '</div>'+
+                    '</div>';
+        document.getElementById("ListeArcticlePanier").innerHTML = panier_vide;
+      })
       form.classList.add("was-validated")
     }, false)
   }, false)
@@ -260,5 +277,5 @@ let teddies = getallteddies(urlApi);
 
 //Bouton vider le panier
   clear.onclick = function() {
-    panier.clear();
+    storage.clear();
   }
