@@ -153,7 +153,7 @@ function postForm(url,json) {
 function redirectForm(response) {
   let json = JSON.parse(response);
   let results = json;
-  panier.clear();
+  storage.clear();
   let price = 0;
   for(i=0;i<results.products.length;i++){
     price = price + results.products[i].price;
@@ -162,37 +162,6 @@ function redirectForm(response) {
                 '?id=' + results.orderId +
                 '&price=' + price;
   window.location.href = confirmUrl;
-}
-
-
-/**
- * Verification du champs email du formulaire
- *
- * @param {string} email une chaine de caracteres representant l'input email du formulaire.
-*/
-function ValidateEmail(email)
-{
-  const mailformat =  RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
-  // if(mailformat.test(email)){
-  //   return true;
-  // } else {
-  //   return false;
-  // }
-  return mailformat.test(email);
-}
-/**
- * Verification des champs du formulaire
- *
- * @param {string} input une chaine de caracteres representant un input sauf l'email du formulaire.
- *@param {int} nbCharactere un entier représentant le nombre de caracteres minimum attendu.
-*/
-function validateInput(input,nbCharactere) {
-  const regex = RegExp('^[a-zA-Z]+$');
-  if(regex.test(input)){
-    return (input.length > nbCharactere);
-  } else {
-    return false;
-  }
 }
 /**
  * Verification du panier.
@@ -213,6 +182,7 @@ function validatePanier(panier) {
 (function() {
   window.addEventListener("load", function() {
     let form = document.getElementById("form")
+    //document.getElementById("inputAddressElectronique").pattern = '^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$'
     form.addEventListener("submit", function(event) {
       event.preventDefault()
       const prenom = form.elements.inputPrenom.value.trim();
@@ -221,6 +191,14 @@ function validatePanier(panier) {
       const email = form.elements.inputAddressElectronique.value.trim();
       const ville = form.elements.inputVille.value.trim();
 
+
+      const tabPanier = JSON.parse(storage.getItem('Panier'));
+      const panierCommande = [];
+        if(tabPanier != null) {
+        for (let i= 0; i < tabPanier.length; i++) {
+            panierCommande[i] = tabPanier[i].id;
+          }
+        }
 
       if (!form.checkValidity()) {
         form.classList.add("was-validated");
@@ -235,7 +213,7 @@ function validatePanier(panier) {
         email: email
       }
 
-      const products = tabPanier;
+      const products = panierCommande;
 
       const finalObj = {
         contact: contact,
@@ -245,7 +223,7 @@ function validatePanier(panier) {
       let testjson = JSON.stringify(finalObj);
       console.log(testjson);
 
-      let verifPanier = validatePanier(tabPanier);
+      let verifPanier = validatePanier(panierCommande);
       verifPanier.then((value) => {
         let result = postForm(urlApi,testjson);
         result.then((value) => {
