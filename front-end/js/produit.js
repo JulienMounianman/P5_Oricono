@@ -55,11 +55,11 @@ function affichageTeddy(teddy) {
         '</div>'+
       '</div>'+
     '</div>';
-  let title = 'Oricono | '+ results.name;
   name = results.name;
+  document.title = "Oricono | " + name;
   document.getElementById("teddy").innerHTML = resultHTML;
   document.getElementById("colors").innerHTML = colors_results;
-  document.getElementById("title").innerHTML = title;
+
   let btnContainer = document.getElementById("colors");
   let btns = btnContainer.getElementsByClassName("list-group-item");
   for (let i = 0; i < btns.length; i++) {
