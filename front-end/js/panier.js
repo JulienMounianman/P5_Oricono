@@ -106,6 +106,13 @@ function affichagePanier (allteddies) {
     let afficherPrixTotal = "Prix total : " + prixtotal/100 + "€";
     document.getElementById("ListeArcticlePanier").innerHTML = allArticlePanier;
     document.getElementById("prixtotal").innerHTML = afficherPrixTotal;
+  } else {
+    let panier_vide = '<div class="col-md-12">' +
+                  '<div class="alert alert-warning text-center" role="alert">'+
+                    "Le panier est vide"
+                  '</div>'+
+                '</div>';
+    document.getElementById("ListeArcticlePanier").innerHTML = panier_vide;
   }
 }
 
@@ -180,9 +187,9 @@ function redirectForm(response) {
 function validatePanier(panier) {
   return new Promise((resolve, reject) => {
     if(panier[0] != null) {
-      resolve("Le Panier n'est pas vide");
+      resolve("Le panier n'est pas vide");
     }else{
-      reject("Le Panier est vide");
+      reject("Le panier est vide !!!");
     }
   });
 }
@@ -220,17 +227,12 @@ function validatePanier(panier) {
         city: ville,
         email: email
       }
-
       const products = panierCommande;
-
       const finalObj = {
         contact: contact,
         products: products
       }
-
       let testjson = JSON.stringify(finalObj);
-      console.log(testjson);
-
       let verifPanier = validatePanier(panierCommande);
       verifPanier.then((value) => {
         let result = postForm(urlApi,testjson);
