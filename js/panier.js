@@ -1,3 +1,4 @@
+const referrer = document.referrer;
 const adresseActuelle = window.location.href;
 const url = new URL(adresseActuelle);
 const params = new URLSearchParams(url.search);
@@ -17,7 +18,6 @@ function GestionPanier() {
     const tabPanier = JSON.parse(storage.getItem('Panier'));
     let bool = false;
     if(tabPanier != null) {
-      console.log(tabPanier.length);
       for (let i= 0; i < tabPanier.length; i++) {
           if(tabPanier[i].id == id) {
               tabPanier[i].quantity = tabPanier[i].quantity + 1;
@@ -40,11 +40,12 @@ function GestionPanier() {
       }
       let newtabPanier = [];
       newtabPanier[0] = oursObject;
-      console.log(newtabPanier);
       storage.setItem('Panier', JSON.stringify(newtabPanier));
     }
     params.delete('id');
+
   }
+  console.log(referrer);
 }
 /**
  * Gère l'affichage des ours en peluche présant dans le panier sur ma page html.
