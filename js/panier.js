@@ -19,7 +19,7 @@ function GestionPanier() {
     if(referrer) {
       const previousUrl = new URL(referrer);
       const previousParams = new URLSearchParams(previousUrl.search);
-      const previous_id = previousParams.get('id');
+      previous_id = previousParams.get('id');
     }
     console.log(id + " != " + previous_id);
     if(id != previous_id){
