@@ -1,0 +1,19 @@
+{
+  "name": "julienmounianman.github.io",
+  "description": "",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JulienMounianman/julienmounianman.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://julienmounianman.github.io/index.html",
+  "dependencies": {
+    "bootstrap": "^4.5.3"
+  }
+}

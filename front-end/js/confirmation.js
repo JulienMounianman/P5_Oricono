@@ -11,7 +11,7 @@ if(params.has('id')) {
                   '<h4 class="alert-heading">Confirmation Commande</h4>'+
                   '<p>Voici votre Identifiant de commande : '+ id +'</p>'+
                   '<hr>'+
-                  '<p class="mb-0">Prix total de votre commande :'+ price/100 +'</p>'+
+                  '<p class="mb-0">Prix total de votre commande :'+ price/100 +'€</p>'+
                   '</div>';
 
       document.getElementById("confirm").innerHTML = resultHTML;

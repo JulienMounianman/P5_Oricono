@@ -2,6 +2,8 @@ const adresseActuelle = window.location.href;
 const url = new URL(adresseActuelle);
 const params = new URLSearchParams(url.search);
 const urlApi = "http://localhost:3000/api/teddies";
+const storage = localStorage;
+let name = "";
 /**
  * Fait un appel get sur une api en fonction d'un id
  *
@@ -45,8 +47,8 @@ function affichageTeddy(teddy) {
       '</div>' +
       '<img src="'+ results.imageUrl +'" class="card-img-top" alt="image'+ results.name +'">'+
       '<div class="card-body">'+
-        '<p class="card-text">'+ results.description +'<span class="badge badge-pill badge-info">'+ results.price +'</span></p>'+
-        '<a href="'+ panierUrl +'" class="btn btn-primary">Ajouter au panier</a>'+
+        '<p class="card-text">'+ results.description +'<span class="badge badge-pill badge-info">'+ results.price/100 +'€</span></p>'+
+        '<button id="add" class="btn btn-primary">Ajouter au panier</button>'+
       '</div>'+
       '<div class="card-footer text-muted">'+
         '<div class="list-group" id="colors">'+
@@ -54,6 +56,7 @@ function affichageTeddy(teddy) {
       '</div>'+
     '</div>';
   let title = 'Oricono | '+ results.name;
+  name = results.name;
   document.getElementById("teddy").innerHTML = resultHTML;
   document.getElementById("colors").innerHTML = colors_results;
   document.getElementById("title").innerHTML = title;
@@ -67,6 +70,55 @@ function affichageTeddy(teddy) {
     });
   }
 }
+/**
+ * Verifie si un parametre est présent dans l'url.
+ * Ajoute un ours dans le panier (loacalStorage).
+ * Supprime le parametre après l'ajout de l'ours dans le panier.
+ * Ajoute tous le contenu de mon panier dans un tableau JS.
+*/
+function GestionPanier() {
+  let resultHTML = "";
+  if(params.has('id')) {
+    const id = params.get('id');
+    const tabPanier = JSON.parse(storage.getItem('Panier'));
+    let bool = false;
+    if(tabPanier != null) {
+      for (let i= 0; i < tabPanier.length; i++) {
+          if(tabPanier[i].id === id) {
+              tabPanier[i].quantity = tabPanier[i].quantity + 1;
+              bool = true;
+          }
+        }
+      if(!bool) {
+        const oursObject = {
+          id,
+          quantity: 1
+        }
+        tabPanier.push(oursObject);
+      }
+      storage.setItem('Panier', JSON.stringify(tabPanier));
+      resultHTML =  '<div class="col-md">' +
+                    '<div class="alert alert-success text-center" role="alert">'+
+                    'L'+ "'"+ 'ours ' + name + 'a été ajouté au panier'
+                    '</div>'+
+                  '</div>';
+    } else {
+      const oursObject = {
+        id,
+        quantity: 1
+      }
+      const newtabPanier = [];
+      newtabPanier.push(oursObject);
+      storage.setItem('Panier', JSON.stringify(newtabPanier));
+      resultHTML =  '<div class="col-md">' +
+                    '<div class="alert alert-success text-center" role="alert">'+
+                    'L'+ "'"+ 'ours ' + name + 'a été ajouté au panier'
+                    '</div>'+
+                  '</div>';
+    }
+    document.getElementById("message").innerHTML = resultHTML;
+  }
+}
 //Verification d'un parametre id dans mon url
 if(params.has('id')) {
   const id = params.get('id');
@@ -74,6 +126,10 @@ if(params.has('id')) {
   let teddy = getTeddy(urlApi,id);
   teddy.then((value) => {
     affichageTeddy(value);
+    const add = document.getElementById("add");
+    add.onclick = function() {
+      GestionPanier();
+    }
   }).catch((error) => {
     let resultHTML = '<div class="col-md">' +
                   '<div class="alert alert-danger text-center" role="alert">'+

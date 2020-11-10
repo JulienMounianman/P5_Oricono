@@ -2,8 +2,8 @@ const referrer = document.referrer;
 const adresseActuelle = window.location.href;
 const url = new URL(adresseActuelle);
 const params = new URLSearchParams(url.search);
-let storage = localStorage;
-let clear = document.getElementById("clear");
+const storage = localStorage;
+const clear = document.getElementById("clear");
 const urlApi = "http://localhost:3000/api/teddies";
 /**
  * Verifie si un parametre est présent dans l'url.
@@ -27,9 +27,8 @@ function GestionPanier() {
       let bool = false;
       if(tabPanier != null) {
         for (let i= 0; i < tabPanier.length; i++) {
-            if(tabPanier[i].id == id) {
+            if(tabPanier[i].id === id) {
                 tabPanier[i].quantity = tabPanier[i].quantity + 1;
-                storage.setItem('Panier', JSON.stringify(tabPanier));
                 bool = true;
             }
           }
@@ -39,15 +38,15 @@ function GestionPanier() {
             quantity: 1
           }
           tabPanier.push(oursObject);
-          storage.setItem('Panier', JSON.stringify(tabPanier));
         }
+        storage.setItem('Panier', JSON.stringify(tabPanier));
       } else {
         const oursObject = {
           id,
           quantity: 1
         }
-        let newtabPanier = [];
-        newtabPanier[0] = oursObject;
+        const newtabPanier = [];
+        newtabPanier.push(oursObject);
         storage.setItem('Panier', JSON.stringify(newtabPanier));
       }
       params.delete('id');
@@ -90,10 +89,11 @@ function affichagePanier (allteddies) {
         let resultHTML =
         '<div class="col-sm-3">'+
           '<div class="card text-white bg-'+color+' mb-3" style="max-width: 18rem;">'+
-            '<div class="card-header">'+ results[x].name  +'</div>'+
+            '<div class="card-header text-center">'+ results[x].name  +'</div>'+
             '<div class="card-body">'+
-              '<h5 class="card-title">'+ results[x].price/100  +'</h5>'+
-              '<p class="card-text"> quantité : '+ tabPanier[i].quantity +'</p>'+
+              '<h5 class="card-title"> Prix : '+ results[x].price/100  +'€ </h5>'+
+              '<p class="card-text"> Quantité : '+ tabPanier[i].quantity +'</p>'+
+              '<img src="'+ results[x].imageUrl +'" class="card-img-top" width="320" height="120" alt="image'+ results[x].name +'">'+
             '</div>'+
           '</div>'+
         '</div>';
@@ -103,7 +103,7 @@ function affichagePanier (allteddies) {
       }
     }
     allArticlePanier = teddies.join("");
-    let afficherPrixTotal = "Prix total : " + prixtotal/100;
+    let afficherPrixTotal = "Prix total : " + prixtotal/100 + "€";
     document.getElementById("ListeArcticlePanier").innerHTML = allArticlePanier;
     document.getElementById("prixtotal").innerHTML = afficherPrixTotal;
   }
