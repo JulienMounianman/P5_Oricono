@@ -15,7 +15,7 @@ const urlApi = "http://localhost:3000/api/teddies";
 function GestionPanier() {
   if(params.has('id')) {
     console.log(adresseActuelle);
-    console.log(referer);
+    console.log(referrer);
     console.log(url);
     if(adresseActuelle != referrer){
       const id = params.get('id');
