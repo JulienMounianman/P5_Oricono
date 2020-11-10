@@ -1,7 +1,9 @@
 const referrer = document.referrer;
 const adresseActuelle = window.location.href;
 const url = new URL(adresseActuelle);
+const previousUrl = new URL(referrer);
 const params = new URLSearchParams(url.search);
+const previousParams = new URLSearchParams(previousUrl.search);
 let storage = localStorage;
 let clear = document.getElementById("clear");
 const urlApi = "http://localhost:3000/api/teddies";
@@ -14,11 +16,10 @@ const urlApi = "http://localhost:3000/api/teddies";
 
 function GestionPanier() {
   if(params.has('id')) {
-    console.log(adresseActuelle);
-    console.log(referrer);
-    console.log(url);
-    if(adresseActuelle != referrer){
-      const id = params.get('id');
+    const id = params.get('id');
+    const previous_id = previousParams.get('id');
+    console.log(id + "!=" + previous_id);
+    if(id != previous_id){
       const tabPanier = JSON.parse(storage.getItem('Panier'));
       let bool = false;
       if(tabPanier != null) {
