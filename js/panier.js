@@ -14,37 +14,38 @@ const urlApi = "http://localhost:3000/api/teddies";
 
 function GestionPanier() {
   if(params.has('id')) {
-    const id = params.get('id');
-    const tabPanier = JSON.parse(storage.getItem('Panier'));
-    let bool = false;
-    if(tabPanier != null) {
-      for (let i= 0; i < tabPanier.length; i++) {
-          if(tabPanier[i].id == id) {
-              tabPanier[i].quantity = tabPanier[i].quantity + 1;
-              storage.setItem('Panier', JSON.stringify(tabPanier));
-              bool = true;
+    if(adresseActuelle != referrer){
+      const id = params.get('id');
+      const tabPanier = JSON.parse(storage.getItem('Panier'));
+      let bool = false;
+      if(tabPanier != null) {
+        for (let i= 0; i < tabPanier.length; i++) {
+            if(tabPanier[i].id == id) {
+                tabPanier[i].quantity = tabPanier[i].quantity + 1;
+                storage.setItem('Panier', JSON.stringify(tabPanier));
+                bool = true;
+            }
           }
+        if(!bool) {
+          const oursObject = {
+            id,
+            quantity: 1
+          }
+          tabPanier.push(oursObject);
+          storage.setItem('Panier', JSON.stringify(tabPanier));
         }
-      if(!bool) {
+      } else {
         const oursObject = {
           id,
           quantity: 1
         }
-        tabPanier.push(oursObject);
-        storage.setItem('Panier', JSON.stringify(tabPanier));
+        let newtabPanier = [];
+        newtabPanier[0] = oursObject;
+        storage.setItem('Panier', JSON.stringify(newtabPanier));
       }
-    } else {
-      const oursObject = {
-        id,
-        quantity: 1
+      params.delete('id');
       }
-      let newtabPanier = [];
-      newtabPanier[0] = oursObject;
-      storage.setItem('Panier', JSON.stringify(newtabPanier));
     }
-    params.delete('id');
-
-  }
   console.log(referrer);
 }
 /**
