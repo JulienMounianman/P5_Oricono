@@ -5,54 +5,7 @@ const params = new URLSearchParams(url.search);
 const storage = localStorage;
 const clear = document.getElementById("clear");
 const urlApi = "http://localhost:3000/api/teddies";
-/**
- * Verifie si un parametre est présent dans l'url.
- * Ajoute un ours dans le panier (loacalStorage).
- * Supprime le parametre après l'ajout de l'ours dans le panier.
- * Ajoute tous le contenu de mon panier dans un tableau JS.
-*/
 
-function GestionPanier() {
-  if(params.has('id')) {
-    const id = params.get('id');
-    let previous_id = "no_id";
-    if(referrer) {
-      const previousUrl = new URL(referrer);
-      const previousParams = new URLSearchParams(previousUrl.search);
-      previous_id = previousParams.get('id');
-    }
-    console.log(id + " != " + previous_id);
-    if(id != previous_id){
-      const tabPanier = JSON.parse(storage.getItem('Panier'));
-      let bool = false;
-      if(tabPanier != null) {
-        for (let i= 0; i < tabPanier.length; i++) {
-            if(tabPanier[i].id === id) {
-                tabPanier[i].quantity = tabPanier[i].quantity + 1;
-                bool = true;
-            }
-          }
-        if(!bool) {
-          const oursObject = {
-            id,
-            quantity: 1
-          }
-          tabPanier.push(oursObject);
-        }
-        storage.setItem('Panier', JSON.stringify(tabPanier));
-      } else {
-        const oursObject = {
-          id,
-          quantity: 1
-        }
-        const newtabPanier = [];
-        newtabPanier.push(oursObject);
-        storage.setItem('Panier', JSON.stringify(newtabPanier));
-      }
-      params.delete('id');
-      }
-    }
-}
 /**
  * Gère l'affichage des ours en peluche présant dans le panier sur ma page html.
  *
@@ -257,7 +210,6 @@ function validatePanier(panier) {
 //Utilisation de mes fonctions getallteddies, GestionPanier, affichagePanier
 let teddies = getallteddies(urlApi);
     teddies.then((value) => {
-      GestionPanier();
       affichagePanier(value);
     }).catch((error) => {
       console.log(error);
