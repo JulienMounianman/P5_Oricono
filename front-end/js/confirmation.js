@@ -20,3 +20,4 @@ function main() {
         window.location.href = adresseActuelle.replace('confirmation', 'index');
     }
 }
+main();

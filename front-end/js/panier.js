@@ -107,13 +107,12 @@ function postForm(url, json) {
  */
 function redirectForm(response) {
     const results = JSON.parse(response);
+    const allPrice = [];
     storage.clear();
-    const price = results.products.reduce((accumulator, currentValue, index) => {
-        if (index === 4) {
-            accumulator = accumulator + currentValue;
-        }
-        return accumulator;
-    });
+    for (let i = 0; i < results.products.length; i++) {
+      allPrice[i] = results.products[i].price;
+    }
+    const price = allPrice.reduce((a, b) => a + b);
     const confirmUrl = url.pathname.replace('panier', 'confirmation') +
         '?id=' + results.orderId +
         '&price=' + price;
