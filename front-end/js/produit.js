@@ -52,7 +52,9 @@ function affichageTeddy(teddy) {
         '<img src="' + results.imageUrl + '" class="card-img-top" alt="image' + results.name + '">' +
         '<div class="card-body">' +
         '<p class="card-text">' + results.description + '<span class="badge badge-pill badge-info">' + results.price / 100 + '€</span></p>' +
-        '<button id="add" class="btn btn-primary">Ajouter au panier</button>' +
+        '<button id="add" class="btn btn-primary"><span id="spinner"></span>Ajouter au panier</button>' +
+        '</div>' +
+        '<div id="message">' +
         '</div>' +
         '<div class="card-footer text-muted">' +
         '<div class="list-group" id="colors">' +
@@ -118,8 +120,21 @@ function addPanier(panier) {
         'L' + "'" + 'ours ' + name + 'a été ajouté au panier'
     '</div>' +
     '</div>';
+
+    const spinner = '<span class="spinner-border spinner-border-sm"></span>';
+
     storage.setItem('Panier', JSON.stringify(panier));
+    document.getElementById("add").disabled = true;
+    document.getElementById("spinner").innerHTML = spinner;
+
+    setTimeout(function(){
     document.getElementById("message").innerHTML = resultHTML;
+    document.getElementById("spinner").innerHTML = "";
+      setTimeout(function(){
+        document.getElementById("message").innerHTML = "";
+        document.getElementById("add").disabled = false;
+      }, 1500);
+    }, 3000);
 }
 
 function main() {
