@@ -120,13 +120,10 @@ function addPanier(panier) {
         'L' + "'" + 'ours ' + name + 'a été ajouté au panier'
     '</div>' +
     '</div>';
-
     const spinner = '<span class="spinner-border spinner-border-sm"></span>';
-
     storage.setItem('Panier', JSON.stringify(panier));
     document.getElementById("add").disabled = true;
     document.getElementById("spinner").innerHTML = spinner;
-
     setTimeout(function(){
     document.getElementById("message").innerHTML = resultHTML;
     document.getElementById("spinner").innerHTML = "";
@@ -134,7 +131,7 @@ function addPanier(panier) {
         document.getElementById("message").innerHTML = "";
         document.getElementById("add").disabled = false;
       }, 1500);
-    }, 3000);
+    }, 1500);
 }
 
 function main() {

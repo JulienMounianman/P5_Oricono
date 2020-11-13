@@ -118,15 +118,6 @@ function redirectForm(response) {
         '&price=' + price;
     window.location.href = confirmUrl;
 }
-/**
- * Verification du panier.
- *
- * @param {array} panier un tableau représentant les articles présent dans mon panier(localStorage)
- *
- */
-function validatePanier(panier) {
-    return (panier.length !== null);
-}
 
 
 function gestionForm() {
@@ -150,7 +141,13 @@ function eventForm(event) {
     const panierCommande = [];
     if (tabPanier != null) {
         for (let i = 0; i < tabPanier.length; i++) {
+          if( tabPanier[i].quantity > 1){
+            for(let j = 0; j < tabPanier[i].quantity; j++) {
+              panierCommande[j] = tabPanier[i].id
+            }
+          } else {
             panierCommande[i] = tabPanier[i].id;
+          }
         }
     }
 
@@ -170,7 +167,7 @@ function eventForm(event) {
         contact: contact,
         products: products
     }
-    if (validatePanier(panierCommande)) {
+    if (panierCommande.length !== 0) {
         const result = postForm(urlApi, JSON.stringify(finalObj));
         result.then((value) => {
             redirectForm(value);
