@@ -21,13 +21,13 @@ function affichagePanier(allteddies) {
             for (let i = 0; i < tabPanier.length; i++) {
                 if (tabPanier[i].id === results[x]._id) {
                     const resultHTML =
-                        '<div class="col-sm-3">' +
+                        '<div class="col-sm-4">' +
                         '<div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">' +
                         '<div class="card-header text-center">' + results[x].name + '</div>' +
                         '<div class="card-body">' +
                         '<h5 class="card-title"> Prix : ' + results[x].price / 100 + '€ </h5>' +
                         '<p class="card-text"> Quantité : ' + tabPanier[i].quantity + '</p>' +
-                        '<img src="' + results[x].imageUrl + '" class="card-img-top" width="320" height="120" alt="image' + results[x].name + '">' +
+                        '<img src="' + results[x].imageUrl + '" class="card-img-top" width="220" height="120" alt="image' + results[x].name + '">' +
                         '</div>' +
                         '</div>' +
                         '</div>';
@@ -164,8 +164,8 @@ function eventForm(event) {
     }
     const products = panierCommande;
     const finalObj = {
-        contact: contact,
-        products: products
+        contact,
+        products
     }
     if (panierCommande.length !== 0) {
         const result = postForm(urlApi, JSON.stringify(finalObj));

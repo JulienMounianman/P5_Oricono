@@ -7825,4 +7825,8 @@ body {
 h1 {
   margin: auto; }
 
+@media (min-width: 576px) {
+  #teddies .col-md-4 .card {
+    margin: auto; } }
+
 /*# sourceMappingURL=style.css.map */
