@@ -198,7 +198,7 @@ function verifPanier(panier) {
             '</div>';
         document.getElementById("ListeArcticlePanier").innerHTML = panier_vide;
     }
-    return (products.length !== 0);
+    return (panier.length !== 0);
 }
 
 /**
