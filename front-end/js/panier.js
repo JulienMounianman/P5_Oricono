@@ -174,14 +174,23 @@ function eventForm(event) {
         contact,
         products
     }
-    if (products.length !== 0) {
+    if (verifPanier(products)) {
         const result = postForm(urlApi, JSON.stringify(finalObj));
         result.then((value) => {
             redirectForm(value);
         }).catch((error) => {
             console.log(error);
         })
-    } else {
+    }
+    form.classList.add("was-validated")
+}
+
+/**
+ * Verifie si mon panier est vide.
+ * @param {array} panier event "submit" de mon formulaire.
+ */
+function verifPanier(panier) {
+    if(panier.length === 0) {
         const panier_vide = '<div class="col-md-12">' +
             '<div class="alert alert-danger text-center" role="alert">' +
             'Panier Vide !!!' +
@@ -189,7 +198,7 @@ function eventForm(event) {
             '</div>';
         document.getElementById("ListeArcticlePanier").innerHTML = panier_vide;
     }
-    form.classList.add("was-validated")
+    return (products.length !== 0);
 }
 
 /**
