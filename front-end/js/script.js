@@ -10,14 +10,14 @@ function getallteddies(url) {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
         xhr.open("GET", url);
-        xhr.onload = function() {
+        xhr.onload = function () {
             if (xhr.status != 200) {
                 reject('Error' + xhr.status + ':' + xhr.statusText);
             } else {
                 resolve(xhr.responseText);
             }
         }
-        xhr.onerror = function() {
+        xhr.onerror = function () {
             reject("Connexion à l'API impossible");
         };
         xhr.send();
@@ -31,7 +31,6 @@ function getallteddies(url) {
 function affichageAllTeddies(allteddies) {
     const results = JSON.parse(allteddies);
     let teddies = [];
-    teddies.length = 4;
     for (let x in results) {
         const urlproduit = url + '?id=' + results[x]._id
         const resultHTML =
@@ -40,7 +39,7 @@ function affichageAllTeddies(allteddies) {
             '<img src="' + results[x].imageUrl + '" class="card-img-top" width="320" height="210" alt="image' + results[x].name + '">' +
             '<div class="card-body">' +
             '<h5 class="card-title">' + results[x].name + '</h5>' +
-            '<span class="badge badge-pill badge-info">' + results[x].price / 100 + '€</span>'+
+            '<span class="badge badge-pill badge-info">' + results[x].price / 100 + '€</span>' +
             '<p class="card-text">' + results[x].description + '</p>' +
             '<a href="' + urlproduit + '" class="btn btn-primary">Plus d' + "'" + 'infos</a>' +
             '</div>' +
