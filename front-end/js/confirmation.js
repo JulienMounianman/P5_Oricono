@@ -2,7 +2,7 @@ const adresseActuelle = window.location.href;
 const url = new URL(adresseActuelle);
 const params = new URLSearchParams(url.search);
 
-function main() {
+function confirmation() {
     if (params.has('id') && params.has('price')) {
         const id = params.get('id');
         const price = params.get('price')
@@ -20,4 +20,4 @@ function main() {
         window.location.href = adresseActuelle.replace('confirmation', 'index');
     }
 }
-main();
+confirmation();

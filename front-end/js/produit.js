@@ -14,14 +14,14 @@ function getTeddy(url, id) {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
         xhr.open("GET", url + '/' + id);
-        xhr.onload = function() {
+        xhr.onload = function () {
             if (xhr.status != 200) {
                 reject('Error' + xhr.status + ':' + xhr.statusText);
             } else {
                 resolve(xhr.responseText);
             }
         }
-        xhr.onerror = function() {
+        xhr.onerror = function () {
             reject("Request failed");
         };
         xhr.send();
@@ -34,7 +34,7 @@ function getTeddy(url, id) {
  */
 function affichageTeddy(teddy) {
     const results = JSON.parse(teddy);
-    let colors = [];
+    const colors = [];
     colors.length = results.colors.length;
     for (let i = 0; i < colors.length; i++) {
         if (i == 0) {
@@ -67,7 +67,7 @@ function affichageTeddy(teddy) {
     const btnContainer = document.getElementById("colors");
     const btns = btnContainer.getElementsByClassName("list-group-item");
     for (let i = 0; i < btns.length; i++) {
-        btns[i].addEventListener("click", function() {
+        btns[i].addEventListener("click", function () {
             eventColor(btnContainer, this)
         });
     }
@@ -124,10 +124,10 @@ function addPanier(panier) {
     storage.setItem('Panier', JSON.stringify(panier));
     document.getElementById("add").disabled = true;
     document.getElementById("spinner").innerHTML = spinner;
-    setTimeout(function() {
+    setTimeout(function () {
         document.getElementById("message").innerHTML = resultHTML;
         document.getElementById("spinner").innerHTML = "";
-        setTimeout(function() {
+        setTimeout(function () {
             document.getElementById("message").innerHTML = "";
             document.getElementById("add").disabled = false;
         }, 1500);
@@ -143,7 +143,7 @@ function main() {
         teddy.then((value) => {
             affichageTeddy(value);
             const add = document.getElementById("add");
-            add.onclick = function() {
+            add.onclick = function () {
                 GestionPanier();
             }
         }).catch((error) => {

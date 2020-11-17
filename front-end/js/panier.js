@@ -59,14 +59,14 @@ function getAllteddies(url) {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
         xhr.open("GET", url);
-        xhr.onload = function() {
+        xhr.onload = function () {
             if (xhr.status != 200) {
                 reject('Error' + xhr.status + ':' + xhr.statusText);
             } else {
                 resolve(xhr.responseText);
             }
         }
-        xhr.onerror = function() {
+        xhr.onerror = function () {
             reject("Request failed");
         };
         xhr.send();
@@ -84,14 +84,14 @@ function postForm(url, json) {
         const xhr = new XMLHttpRequest();
         xhr.open("POST", url + '/order');
         xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.onload = function() {
+        xhr.onload = function () {
             if (xhr.status != 201) {
                 reject('Error' + xhr.status + ':' + xhr.statusText);
             } else {
                 resolve(xhr.responseText);
             }
         }
-        xhr.onerror = function() {
+        xhr.onerror = function () {
             reject("Request failed");
         };
         xhr.send(json);
@@ -110,9 +110,10 @@ function redirectForm(response) {
     const allPrice = [];
     storage.clear();
     for (let i = 0; i < results.products.length; i++) {
-      allPrice[i] = results.products[i].price;
+        allPrice[i] = results.products[i].price;
     }
     const price = allPrice.reduce((a, b) => a + b);
+
     const confirmUrl = url.pathname.replace('panier', 'confirmation') +
         '?id=' + results.orderId +
         '&price=' + price;
@@ -121,9 +122,9 @@ function redirectForm(response) {
 
 
 function gestionForm() {
-    window.addEventListener("load", function() {
+    window.addEventListener("load", function () {
         let form = document.getElementById("form")
-        form.addEventListener("submit", function(event) {
+        form.addEventListener("submit", function (event) {
             eventForm(event)
         }, false)
     }, false)
@@ -141,13 +142,13 @@ function eventForm(event) {
     const panierCommande = [];
     if (tabPanier != null) {
         for (let i = 0; i < tabPanier.length; i++) {
-          if( tabPanier[i].quantity > 1){
-            for(let j = 0; j < tabPanier[i].quantity; j++) {
-              panierCommande[j] = tabPanier[i].id
+            if (tabPanier[i].quantity > 1) {
+                for (let j = 0; j < tabPanier[i].quantity; j++) {
+                    panierCommande[j] = tabPanier[i].id
+                }
+            } else {
+                panierCommande[i] = tabPanier[i].id;
             }
-          } else {
-            panierCommande[i] = tabPanier[i].id;
-          }
         }
     }
 
@@ -191,7 +192,7 @@ function gestionTeddies() {
     teddies.then((value) => {
         affichagePanier(value);
         //Bouton vider le panier
-        clear.onclick = function() {
+        clear.onclick = function () {
             storage.clear();
         }
     }).catch((error) => {
