@@ -3,7 +3,6 @@ const url = new URL(adresseActuelle);
 const params = new URLSearchParams(url.search);
 const urlApi = "http://localhost:3000/api/teddies";
 const storage = localStorage;
-let name = "";
 /**
  * Fait un appel get sur une api en fonction d'un id
  *
@@ -37,7 +36,7 @@ function affichageTeddy(teddy) {
     const colors = [];
     colors.length = results.colors.length;
     for (let i = 0; i < colors.length; i++) {
-        if (i == 0) {
+        if (i === 0) {
             colors[i] = '<button type="button" class="list-group-item list-group-item-action active" id="color' + i + '">' + results.colors[i] + '</button>';
         } else {
             colors[i] = '<button type="button" class="list-group-item list-group-item-action" id="color' + i + '">' + results.colors[i] + '</button>';
@@ -131,7 +130,7 @@ function GestionPanier() {
 function addPanier(panier) {
     const resultHTML = '<div class="col-md">' +
         '<div class="alert alert-success text-center" role="alert">' +
-        'L' + "'" + 'ours ' + name + 'a été ajouté au panier'
+        'L' + "'" + 'ours a été ajouté au panier'
     '</div>' +
     '</div>';
     const spinner = '<span class="spinner-border spinner-border-sm"></span>';

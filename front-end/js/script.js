@@ -30,7 +30,7 @@ function getallteddies(url) {
  */
 function affichageAllTeddies(allteddies) {
     const results = JSON.parse(allteddies);
-    let teddies = [];
+    const teddies = [];
     for (let x in results) {
         const urlproduit = url + '?id=' + results[x]._id
         const resultHTML =
@@ -52,7 +52,7 @@ function affichageAllTeddies(allteddies) {
 /**
  * Execution de mes fonctions getallteddies, affichageAllTeddies
  */
-function script() {
+function main() {
     const teddies = getallteddies(urlApi);
     teddies.then((value) => {
             affichageAllTeddies(value)
@@ -68,4 +68,4 @@ function script() {
         })
 }
 
-script();
+main();

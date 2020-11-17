@@ -12,10 +12,10 @@ const urlApi = "http://localhost:3000/api/teddies";
  */
 function affichagePanier(allteddies) {
     const results = JSON.parse(allteddies);
-    let teddies = [];
+    const teddies = [];
     let prixtotal = 0;
-    let tabPanier = JSON.parse(storage.getItem('Panier'));
-    if (tabPanier != null) {
+    const tabPanier = JSON.parse(storage.getItem('Panier'));
+    if (tabPanier !== null) {
         for (let x in results) {
             for (let i = 0; i < tabPanier.length; i++) {
                 if (tabPanier[i].id === results[x]._id) {
@@ -36,11 +36,11 @@ function affichagePanier(allteddies) {
             }
         }
         allArticlePanier = teddies.join("");
-        let afficherPrixTotal = "Prix total : " + prixtotal / 100 + "€";
+        const afficherPrixTotal = "Prix total : " + prixtotal / 100 + "€";
         document.getElementById("ListeArcticlePanier").innerHTML = allArticlePanier;
         document.getElementById("prixtotal").innerHTML = afficherPrixTotal;
     } else {
-        let panier_vide = '<div class="col-md-12">' +
+        const panier_vide = '<div class="col-md-12">' +
             '<div class="alert alert-warning text-center" role="alert">' +
             "Le panier est vide"
         '</div>' +
@@ -125,7 +125,7 @@ function redirectForm(response) {
  */
 function gestionForm() {
     window.addEventListener("load", function () {
-        let form = document.getElementById("form")
+        const form = document.getElementById("form")
         form.addEventListener("submit", function (event) {
             eventForm(event)
         }, false)
@@ -148,7 +148,7 @@ function eventForm(event) {
 
     const tabPanier = JSON.parse(storage.getItem('Panier'));
     const products = [];
-    if (tabPanier != null) {
+    if (tabPanier !== null) {
         for (let i = 0; i < tabPanier.length; i++) {
             if (tabPanier[i].quantity > 1) {
                 for (let j = 0; j < tabPanier[i].quantity; j++) {
