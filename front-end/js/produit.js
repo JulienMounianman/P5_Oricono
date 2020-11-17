@@ -30,7 +30,7 @@ function getTeddy(url, id) {
 /**
  * Gère l'affichage d'un ours en peluche sur ma page html.
  *
- * @param {string} url une chaine de caracteres representant la reponse de l'api.
+ * @param {string} teddy une chaine de caracteres representant la reponse de l'api.
  */
 function affichageTeddy(teddy) {
     const results = JSON.parse(teddy);
@@ -72,7 +72,13 @@ function affichageTeddy(teddy) {
         });
     }
 }
-
+/**
+ * Gère l'évent click le choix de la couleur
+ * Ajoute la class "active" au boutton sélectionné
+ *
+ * @param {HTMLElement} btnContainer Liste HTML contenant les différentes couleurs
+ * @param {HTMLElement} currentColor Boutton actuellement activé
+ */
 function eventColor(btnContainer, currentColor) {
     const current = btnContainer.getElementsByClassName("active");
     current[0].classList.remove("active")
@@ -114,6 +120,14 @@ function GestionPanier() {
     }
 }
 
+/**
+ * Ajoute un ours à mon panier (local storage)
+ * Affiche un spinner et un message en cas de succès
+ *
+ *
+ * @param {any} panier Liste HTML contenant les différentes couleurs
+ * 
+ */
 function addPanier(panier) {
     const resultHTML = '<div class="col-md">' +
         '<div class="alert alert-success text-center" role="alert">' +
@@ -134,11 +148,15 @@ function addPanier(panier) {
     }, 1500);
 }
 
-function main() {
-    //Verification d'un parametre id dans mon url
+
+/**
+ * Verification d'un parametre id dans mon url
+ * Execution de mes fonctions getTeddy,affichageTeddy, GestionPanier
+ *
+ */
+function produit() {
     if (params.has('id')) {
         const id = params.get('id');
-        //Utilisation des fonctions
         const teddy = getTeddy(urlApi, id);
         teddy.then((value) => {
             affichageTeddy(value);
@@ -157,4 +175,4 @@ function main() {
     }
 }
 
-main();
+produit();

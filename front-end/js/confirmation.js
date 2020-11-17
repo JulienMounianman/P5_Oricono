@@ -2,6 +2,10 @@ const adresseActuelle = window.location.href;
 const url = new URL(adresseActuelle);
 const params = new URLSearchParams(url.search);
 
+/**
+ * Recupération des parametres id et price de mon url
+ *  Affichage de l'id et du prix total de la commande
+ */
 function confirmation() {
     if (params.has('id') && params.has('price')) {
         const id = params.get('id');

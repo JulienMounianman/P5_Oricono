@@ -1,4 +1,3 @@
-const referrer = document.referrer;
 const adresseActuelle = window.location.href;
 const url = new URL(adresseActuelle);
 const params = new URLSearchParams(url.search);
@@ -120,7 +119,10 @@ function redirectForm(response) {
     window.location.href = confirmUrl;
 }
 
-
+/**
+ * Gère les event "load" et "submit" de mon formulaire
+ * 
+ */
 function gestionForm() {
     window.addEventListener("load", function () {
         let form = document.getElementById("form")
@@ -129,7 +131,13 @@ function gestionForm() {
         }, false)
     }, false)
 }
-
+/**
+ * Récupère et crée un objet contact à partir du contenu de mes champs de mon fomulaire 
+ * Récupère le contenu de mon panier dans un tableau "products".
+ * crée un objet "finalobj" contenant l'objet "contact" et le tableau "products".
+ * Envoie L'objet à l'api, récupère la response et redirige vers confirmation.
+ * @param {any} event event "submit" de mon formulaire.
+ */
 function eventForm(event) {
     event.preventDefault()
     const firstName = form.elements.inputPrenom.value.trim();
@@ -139,19 +147,18 @@ function eventForm(event) {
     const city = form.elements.inputVille.value.trim();
 
     const tabPanier = JSON.parse(storage.getItem('Panier'));
-    const panierCommande = [];
+    const products = [];
     if (tabPanier != null) {
         for (let i = 0; i < tabPanier.length; i++) {
             if (tabPanier[i].quantity > 1) {
                 for (let j = 0; j < tabPanier[i].quantity; j++) {
-                    panierCommande[j] = tabPanier[i].id
+                    products[j] = tabPanier[i].id
                 }
             } else {
-                panierCommande[i] = tabPanier[i].id;
+                products[i] = tabPanier[i].id;
             }
         }
     }
-
     if (!form.checkValidity()) {
         form.classList.add("was-validated");
         return;
@@ -163,12 +170,11 @@ function eventForm(event) {
         city,
         email,
     }
-    const products = panierCommande;
     const finalObj = {
         contact,
         products
     }
-    if (panierCommande.length !== 0) {
+    if (products.length !== 0) {
         const result = postForm(urlApi, JSON.stringify(finalObj));
         result.then((value) => {
             redirectForm(value);
@@ -186,12 +192,14 @@ function eventForm(event) {
     form.classList.add("was-validated")
 }
 
+/**
+ * Utilisation de mes fonctions getAllteddies, affichagePanier
+ * Bouton vider le panier (clear)
+ */
 function gestionTeddies() {
-    //Utilisation de mes fonctions getAllteddies, affichagePanier
     const teddies = getAllteddies(urlApi);
     teddies.then((value) => {
         affichagePanier(value);
-        //Bouton vider le panier
         clear.onclick = function () {
             storage.clear();
         }
@@ -199,6 +207,5 @@ function gestionTeddies() {
         console.log(error)
     })
 }
-
 gestionTeddies();
 gestionForm();

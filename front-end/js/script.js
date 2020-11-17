@@ -4,7 +4,7 @@ const urlApi = "http://localhost:3000/api/teddies";
 /**
  * Fait un appel get sur une api
  *
- * @param {string} url une chaine de caracteres ezpresentant l'url de l'api.
+ * @param {string} url une chaîne de caractères representant l'url de l'api.
  */
 function getallteddies(url) {
     return new Promise((resolve, reject) => {
@@ -26,7 +26,7 @@ function getallteddies(url) {
 /**
  * Gère l'affichage de tous les ours en peluche sur ma page html
  *
- * @param {string} url une chaine de caracteres representant la reponse de l'api.
+ * @param {string} allteddies une chaîne de caractères representant la réponse de l'api.
  */
 function affichageAllTeddies(allteddies) {
     const results = JSON.parse(allteddies);
@@ -49,9 +49,10 @@ function affichageAllTeddies(allteddies) {
     }
     document.getElementById("teddies").innerHTML = teddies.join("");
 }
-
-function main() {
-    //Utilisation des fonctions
+/**
+ * Execution de mes fonctions getallteddies, affichageAllTeddies
+ */
+function script() {
     const teddies = getallteddies(urlApi);
     teddies.then((value) => {
             affichageAllTeddies(value)
@@ -67,4 +68,4 @@ function main() {
         })
 }
 
-main();
+script();
