@@ -34,8 +34,8 @@ function affichageAllTeddies(allteddies) {
     for (let x in results) {
         const urlproduit = url + '?id=' + results[x]._id
         const resultHTML =
-            '<div class="col-md-4">' +
-            '<div class="card" style="width: 12rem;">' +
+            '<div class="col-md-3">' +
+            '<div class="card" style="width: 12rem;margin:auto">' +
             '<img src="' + results[x].imageUrl + '" class="card-img-top" width="320" height="210" alt="image' + results[x].name + '">' +
             '<div class="card-body">' +
             '<h5 class="card-title">' + results[x].name + '</h5>' +
