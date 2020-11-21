@@ -31,6 +31,35 @@ body {
 h1 {
   margin: auto;
 }
+h2 {
+  font-size: 1.5em;
+}
+.marginAuto {
+  margin: auto;
+}
+.imgCardProduit {
+  width: 50%;
+  max-height: 50%;
+  margin: auto;
+}
+.imgCardPanier{
+  width: 80%;
+  max-height: 50%;
+  margin: auto;
+}
+.cardIndex {
+  margin-top: 5%;
+}
+@media (min-width: 991px) {
+  .cardIndex {
+    margin-top: 3%;
+    font-size: 1em;
+  }
+  .cardIndex h2{
+    font-size: 1em;
+  }
+}
+
 @media (min-width: 576px) {
   #teddies .col-md-4 .card {
     margin: auto;

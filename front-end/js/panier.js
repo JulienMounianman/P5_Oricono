@@ -15,19 +15,20 @@ function affichagePanier(allteddies) {
     const teddies = [];
     let prixtotal = 0;
     const tabPanier = JSON.parse(storage.getItem('Panier'));
-    if (tabPanier !== null) {
+    if (tabPanier.length > 0) {
         for (let x in results) {
             for (let i = 0; i < tabPanier.length; i++) {
                 if (tabPanier[i].id === results[x]._id) {
                     const resultHTML =
                         '<div class="col-sm-4">' +
-                        '<div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">' +
+                        '<div class="card text-white bg-secondary mb-3">' +
                         '<div class="card-header text-center">' + results[x].name + '</div>' +
                         '<div class="card-body">' +
-                        '<h5 class="card-title"> Prix : ' + results[x].price / 100 + '€ </h5>' +
-                        '<p class="card-text"> Quantité : ' + tabPanier[i].quantity + '</p>' +
-                        '<img src="' + results[x].imageUrl + '" class="card-img-top" width="220" height="120" alt="image' + results[x].name + '">' +
+                        '<h3 class="card-title"> Prix : ' + results[x].price / 100 + '€ </h3>' +
+                        '<p class="card-text"> Quantité : ' + tabPanier[i].quantity + '<br>' + tabPanier[i].color + '</p>' +
+                        '<img src="' + results[x].imageUrl + '" class="card-img-top imgCardPanier" alt="image' + results[x].name + '">' +
                         '</div>' +
+                        '<div class="card-footer text-right" id="divContainer"><button type="button" id="' + i + '" class="btn btn-secondary btn-sm"><i class="far fa-times-circle" "></i></button></div>' +
                         '</div>' +
                         '</div>';
                     teddies[i] = resultHTML;
@@ -44,8 +45,17 @@ function affichagePanier(allteddies) {
             '<div class="alert alert-warning text-center" role="alert">' +
             "Le panier est vide"
         '</div>' +
-        '</div>';
+            '</div>';
         document.getElementById("ListeArcticlePanier").innerHTML = panier_vide;
+    }
+
+    const divContainer = document.getElementById("ListeArcticlePanier");
+    const btns = divContainer.getElementsByClassName("btn-sm");
+    for (let i = 0; i < btns.length; i++) {
+        btns[i].onclick = function () {
+            const idElt = this.getAttribute('id');
+            deleteArticlePanier(idElt)
+        };
     }
 }
 
@@ -190,7 +200,7 @@ function eventForm(event) {
  * @param {array} panier event "submit" de mon formulaire.
  */
 function verifPanier(panier) {
-    if(panier.length === 0) {
+    if (panier.length === 0) {
         const panier_vide = '<div class="col-md-12">' +
             '<div class="alert alert-danger text-center" role="alert">' +
             'Panier Vide !!!' +
@@ -202,15 +212,55 @@ function verifPanier(panier) {
 }
 
 /**
+ * Compte le nombres d'articles qu'il y a dans mon panier
+ * 
+ * @param {any} panier Localstorage
+ * 
+ */
+function affichageNbArticlePanier(panier) {
+    let nb = 0;
+    let quantity = 0;
+    if (panier != null) {
+        for (let i = 0; i < panier.length; i++) {
+            if (panier[i].quantity > 1) {
+                quantity = quantity + (panier[i].quantity - 1);
+            }
+        }
+        nb = quantity + panier.length;
+    }
+    document.getElementById("nb").innerHTML = nb;
+}
+
+/**
+ * Gère l'évent click pour supprimer un article
+ * 
+ *
+ * @param {int} id id de l'article
+ */
+function deleteArticlePanier(id) {
+    const tabPanier = JSON.parse(storage.getItem('Panier'));
+    if (tabPanier[id].quantity > 1) {
+        tabPanier[id].quantity = tabPanier[id].quantity - 1;
+    }
+
+    tabPanier.splice(id, 1);
+    storage.setItem('Panier', JSON.stringify(tabPanier));
+    window.location.href = adresseActuelle;
+}
+
+/**
  * Utilisation de mes fonctions getAllteddies, affichagePanier
  * Bouton vider le panier (clear)
  */
 function gestionTeddies() {
     const teddies = getAllteddies(urlApi);
+    const tabPanier = JSON.parse(storage.getItem('Panier'));
     teddies.then((value) => {
         affichagePanier(value);
+        affichageNbArticlePanier(tabPanier);
         clear.onclick = function () {
-            storage.clear();
+            const newtab = []
+            storage.setItem('Panier', JSON.stringify(newtab));
         }
     }).catch((error) => {
         console.log(error)

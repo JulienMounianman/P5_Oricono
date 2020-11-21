@@ -3,6 +3,7 @@ const url = new URL(adresseActuelle);
 const params = new URLSearchParams(url.search);
 const urlApi = "http://localhost:3000/api/teddies";
 const storage = localStorage;
+let color = "default";
 /**
  * Fait un appel get sur une api en fonction d'un id
  *
@@ -37,18 +38,19 @@ function affichageTeddy(teddy) {
     colors.length = results.colors.length;
     for (let i = 0; i < colors.length; i++) {
         if (i === 0) {
-            colors[i] = '<button type="button" class="list-group-item list-group-item-action active" id="color' + i + '">' + results.colors[i] + '</button>';
+            colors[i] = '<button type="button" class="list-group-item list-group-item-action active" id="' + results.colors[i] + '">' + results.colors[i] + '</button>';
         } else {
-            colors[i] = '<button type="button" class="list-group-item list-group-item-action" id="color' + i + '">' + results.colors[i] + '</button>';
+            colors[i] = '<button type="button" class="list-group-item list-group-item-action" id="' + results.colors[i] + '">' + results.colors[i] + '</button>';
         }
     }
+    color = results.colors[0];
     colors_results = colors.join("");
     const resultHTML =
         '<div class="card text-center">' +
         '<div class="card-header">' +
         '<h5 class="card-title">' + results.name + '</h5>' +
         '</div>' +
-        '<img src="' + results.imageUrl + '" class="card-img-top" alt="image' + results.name + '">' +
+        '<img src="' + results.imageUrl + '" class="card-img-top imgCardProduit" alt="image' + results.name + '">' +
         '<div class="card-body">' +
         '<p class="card-text">' + results.description + '<span class="badge badge-pill badge-info">' + results.price / 100 + '€</span></p>' +
         '<button id="add" class="btn btn-primary"><span id="spinner"></span> Ajouter au panier</button>' +
@@ -71,6 +73,27 @@ function affichageTeddy(teddy) {
         });
     }
 }
+
+/**
+ * Compte le nombres d'article qu'il y a dans mon panier
+ * 
+ * @param {any} panier Localstorage
+ * 
+ */
+function affichageNbArticlePanier(panier) {
+    let nb = 0;
+    let quantity = 0;
+    if (panier != null) {
+        for (let i = 0; i < panier.length; i++) {
+            if (panier[i].quantity > 1) {
+                quantity = quantity + (panier[i].quantity - 1);
+            }
+        }
+        nb = quantity + panier.length;
+    }
+    document.getElementById("nb").innerHTML = nb;
+}
+
 /**
  * Gère l'évent click le choix de la couleur
  * Ajoute la class "active" au boutton sélectionné
@@ -82,6 +105,7 @@ function eventColor(btnContainer, currentColor) {
     const current = btnContainer.getElementsByClassName("active");
     current[0].classList.remove("active")
     currentColor.classList.add("active");
+    color = currentColor.id;
 }
 /**
  * Verifie si un parametre est présent dans l'url.
@@ -96,7 +120,7 @@ function GestionPanier() {
         let bool = false;
         if (tabPanier != null) {
             for (let i = 0; i < tabPanier.length; i++) {
-                if (tabPanier[i].id === id) {
+                if (tabPanier[i].id === id && tabPanier[i].color === color) {
                     tabPanier[i].quantity = tabPanier[i].quantity + 1;
                     bool = true;
                 }
@@ -104,17 +128,21 @@ function GestionPanier() {
             if (!bool) {
                 const oursObject = {
                     id,
-                    quantity: 1
+                    quantity: 1,
+                    color: color
                 }
                 tabPanier.push(oursObject);
             }
             addPanier(tabPanier);
+            affichageNbArticlePanier(JSON.parse(storage.getItem('Panier')));
         } else {
             const oursObject = {
                 id,
-                quantity: 1
+                quantity: 1,
+                color: color
             }
             addPanier([oursObject]);
+            affichageNbArticlePanier(JSON.parse(storage.getItem('Panier')));
         }
     }
 }
@@ -132,7 +160,7 @@ function addPanier(panier) {
         '<div class="alert alert-success text-center" role="alert">' +
         'L' + "'" + 'ours a été ajouté au panier'
     '</div>' +
-    '</div>';
+        '</div>';
     const spinner = '<span class="spinner-border spinner-border-sm"></span>';
     storage.setItem('Panier', JSON.stringify(panier));
     document.getElementById("add").disabled = true;
@@ -157,8 +185,10 @@ function produit() {
     if (params.has('id')) {
         const id = params.get('id');
         const teddy = getTeddy(urlApi, id);
+        const tabPanier = JSON.parse(storage.getItem('Panier'));
         teddy.then((value) => {
             affichageTeddy(value);
+            affichageNbArticlePanier(tabPanier);
             const add = document.getElementById("add");
             add.onclick = function () {
                 GestionPanier();

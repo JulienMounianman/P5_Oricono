@@ -1,20 +1,33 @@
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/css/style.css">
-    <link rel="icon" href="img/favicon.ico" />
-    <script src="js/panier.js" defer></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous" defer></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous" defer></script>
-    <title>Oricono | Panier</title>
-  </head>
-  <body>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/css/style.css">
+  <link rel="icon" href="img/favicon.ico" />
+  <script src="js/panier.js" defer></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"
+    defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"
+    defer></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"
+    defer></script>
+  <title>Oricono | Panier</title>
+</head>
+
+<body>
+  <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="#">Orinoco</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
@@ -24,60 +37,70 @@
         </div>
       </div>
     </nav>
-    <main class="container-fluid">
-      <article class="row">
-        <h1 class="text-center col-md-8">Contenu de mon panier </h1>
-        <section class="row col-md-8" id="ListeArcticlePanier">
-        </section>
-        <section class="col-md-8 price">
-          <a href="panier.html" id='clear' class="btn btn-warning">vider le panier</a>
-          <span class="badge badge-warning" id="prixtotal"></span>
-        </section>
-        <section class="col-md-8 form">
-          <h2 class="text-center"> Veuillez remplir le formulaire ci-dessous pour confirmer la commande</h2>
-          <form id="form" novalidate>
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="inputPrenom">Prenom</label>
-                <input type="text" class="form-control" id="inputPrenom" pattern="[A-Za-z]{1,15}" required>
-                <div class="invalid-feedback">
-                      Veuillez entrer un prénom
-                </div>
-              </div>
-              <div class="form-group col-md-6">
-                <label for="inputNom">Nom</label>
-                <input type="text" class="form-control" id="inputNom" pattern="[A-Za-z]{1,15}" required>
-                <div class="invalid-feedback">
-                      Veuillez entrer un nom
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="inputAddress">Address</label>
-              <input type="text" class="form-control" id="inputAddress" pattern="\w{1,30}" placeholder="12 rue exemple 7800" required>
+  </header>
+  <main class="container-fluid">
+    <article class="row">
+      <h1 class="text-center col-md-8">Détail de votre panier</h1>
+      <section class="col-md-8 marginAuto">
+        <h2><span id="nb"></span> articles dans votre panier</h2>
+        <div id="ListeArcticlePanier" class="row"></div>
+      </section>
+      <section class="col-md-8 price">
+        <h2>Gestion panier</h2>
+        <a href="panier.html" id='clear' class="btn btn-warning">vider le panier</a>
+        <span class="badge badge-warning" id="prixtotal"></span>
+      </section>
+      <section class="col-md-8 form">
+        <h2 class="text-center"> Veuillez remplir le formulaire ci-dessous pour confirmer la commande</h2>
+        <form id="form" novalidate>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="inputPrenom">Prenom</label>
+              <input type="text" class="form-control" id="inputPrenom" pattern="[A-Za-z]{1,15}" required>
               <div class="invalid-feedback">
-                    Veuillez entrer une adresse correcte
+                Veuillez entrer un prénom
               </div>
             </div>
-            <div class="form-group">
-              <label for="inputAddressElectronique">Address électonique</label>
-              <input type="text" class="form-control" id="inputAddressElectronique" pattern="^(([^<>()\[\]\.,;:\s@\x22]+(\.[^<>()\[\]\.,;:\s@\x22]+)*)|(\x22.+\x22))@(([^<>()[\]\.,;:\s@\x22]+\.)+[^<>()[\]\.,;:\s@\x22]{2,})$" placeholder="exemple@email.com" required>
+            <div class="form-group col-md-6">
+              <label for="inputNom">Nom</label>
+              <input type="text" class="form-control" id="inputNom" pattern="[A-Za-z]{1,15}" required>
               <div class="invalid-feedback">
-                    Veuillez entrer une email valide
+                Veuillez entrer un nom
               </div>
             </div>
-            <div class="form-group">
-                <label for="inputVille">Ville</label>
-                <input type="text" class="form-control" pattern="\w{1,30}" id="inputVille" required>
-                <div class="invalid-feedback">
-                      Veuillez entrer une ville
-                </div>
+          </div>
+          <div class="form-group">
+            <label for="inputAddress">Address</label>
+            <input type="text" class="form-control" id="inputAddress" pattern="\w{1,30}"
+              placeholder="12 rue exemple 7800" required>
+            <div class="invalid-feedback">
+              Veuillez entrer une adresse correcte
             </div>
-            <button class="btn btn-primary" type="submit">Envoyer</button>
-            <!-- <input type="button" id="form" value="Envoyer" class="btn btn-primary"> -->
-          </form>
+          </div>
+          <div class="form-group">
+            <label for="inputAddressElectronique">Address électonique</label>
+            <input type="text" class="form-control" id="inputAddressElectronique"
+              pattern="^(([^<>()\[\]\.,;:\s@\x22]+(\.[^<>()\[\]\.,;:\s@\x22]+)*)|(\x22.+\x22))@(([^<>()[\]\.,;:\s@\x22]+\.)+[^<>()[\]\.,;:\s@\x22]{2,})$"
+              placeholder="exemple@email.com" required>
+            <div class="invalid-feedback">
+              Veuillez entrer une email valide
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputVille">Ville</label>
+            <input type="text" class="form-control" pattern="\w{1,30}" id="inputVille" required>
+            <div class="invalid-feedback">
+              Veuillez entrer une ville
+            </div>
+          </div>
+          <button class="btn btn-primary" type="submit">Envoyer</button>
+          <!-- <input type="button" id="form" value="Envoyer" class="btn btn-primary"> -->
+        </form>
       </section>
     </article>
   </main>
-  </body>
+  <footer>
+  </footer>
+</body>
+
 </html>
