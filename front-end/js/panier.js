@@ -241,9 +241,9 @@ function deleteArticlePanier(id) {
     const tabPanier = JSON.parse(storage.getItem('Panier'));
     if (tabPanier[id].quantity > 1) {
         tabPanier[id].quantity = tabPanier[id].quantity - 1;
+    } else {
+        tabPanier.splice(id, 1);
     }
-
-    tabPanier.splice(id, 1);
     storage.setItem('Panier', JSON.stringify(tabPanier));
     window.location.href = adresseActuelle;
 }
